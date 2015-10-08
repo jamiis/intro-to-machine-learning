@@ -18,7 +18,10 @@
 		<link rel="stylesheet" href="css/theme/default.css" id="theme">
 
 		<!-- For syntax highlighting -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+
+        <!-- For syntax highlighting -->
+        <!-- <link rel="stylesheet" href="bower_components/reveal-highlight-themes/styles/tomorrow.css" id="highlight-theme"> -->
 
 		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
 		<script>
@@ -43,225 +46,354 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 				<section>
-					<h1>Intro to OCaml</h1>
+					<h1>Intro to Machine Learning</h1>
 					<p>
                     <small>I'm Jamis</small>
                     </p>
                     <p>
-                    <small><a target="_blank" href="mailto:jamismanwaring@gmail.com">jamismanwaring@gmail.com</a> | <a target="_blank" href="http://github.com/jamiis">github.com/jamiis</a> | <a href="http://twitter.com/jamisjohnson">@jamisjohnson</a></small>
+                    <small><a target="_blank" href="http://jamiis.me">jamiis.me</a> | <a target="_blank" href="http://github.com/jamiis">github.com/jamiis</a> | <a href="http://twitter.com/jamisjohnson">@jamisjohnson</a></small>
 					</p>
 				</section>
 
                 <section>
-                    <h2>OS X Install</h2>
-                    <pre><code data-trim contenteditable>
-$ brew update           # mmmm
-$ brew install ocaml    # should include compiler and other fancy tools
-$ brew install opam     # ocaml package manager
-$ opam install utop     # fancy repl (aka toplevel). works in emacs if that's the way you swing
-                    </code></pre>
-                    <small>If you are running Windows then uh idk. You have bigger problems than downloading ocaml.</small>
+                    <h2>Goals</h2>
+                    <ul>
+                        <li>Fast, brief, <strong>light</strong> intro to supervised learning</li>
+                        <li>Meant to pique interest, not to give an in-depth understanding</li>
+                        <li>Half math, half code</li>
+                    </ul>
                 </section>
 
                 <section>
-                    <a href="http://ocaml.org">
-                      <img src="http://ocaml.org/logo/Colour/JPEG/colour-logo.jpg"
-                           alt="OCaml"
-                           style="border: none; width: 750px;" />
+                    <h2>Download scikit-learn</h2>
+                    <pre><code data-trim contenteditable>
+$ pip install -U pip
+$ pip install -U numpy scipy scikit-learn
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>The 3 Categories of ML</h2>
+                    <ul>
+                        <li><strong>Supervised Learning</strong>: Given data composed of inputs corresponding to outputs, learn a general rule for the mapping.</li>
+                        <li><strong>Unsupervised Learning</strong>: We are given inputs but the outputs are unknown and it is up to us to discover structure.</li>
+                        <li><strong>Reinforcement Learning</strong>: Interact with a dynamic environment to achieve some goal.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Supervised Learning</h2>
+                    <img src="lib/img/ml.png" height="300px">
+                    <blockquote cite="http://cs229.stanford.edu/notes/cs229-notes1.pdf">
+When the target variable that we’re trying to predict is continuous,
+we call the learning problem a regression problem.
+When y can take on only a small number of discrete values,
+we call it a classification problem.
+                    </blockquote>
+                </section>
+
+                <section>
+                    <h2>1D Regression Example Data</h2>
+                    Model Price as a function of Area
+                    <br>
+                    \[ f(Area) = Price \]
+                    <img src="lib/img/table1.png" height="500px">
+                </section>
+
+                <section>
+                    <h2>Input Data</h2>
+                    <img src="lib/img/scatter.png" height="500px">
+                </section>
+
+                <section>
+                    <h2>Model with a Line</h2>
+                    <img src="lib/img/scatter2.png" height="500px">
+                </section>
+
+                <section>
+                    <h2>Hypothesis: a Line!</h2>
+                    A line provides a good fit to the input data
+
+                    <p class="fragment">
+                    <br>
+                    Remember me? The equation of a line!
+                    \[ y = mx + b \]
+
+                    <p class="fragment">
+                    <br>
+                    Re-written with different syntax ...
+                    \[ h(x) = \theta_1 x + \theta_0 \]
+
+                    <p class="fragment">
+                    <br>
+                    Re-arranged ...
+                    \[ h(x) = \theta_0 + \theta_1 x \]
+
+                    <p class="fragment">
+                    <br>
+                    \( \theta \)s are called the <em>parameters</em> or <em>weights</em> of our model
+                </section>
+
+                <section>
+                    <h2>Supervised Learning</h2>
+                    <img src="lib/img/flow.png" height="500px">
+                </section>
+
+                <section>
+                    <h2>2D Regression Example</h2>
+                    Model Price as a function of both Area <em>and</em> Bedrooms
+                    <br>
+                    \[ f(Area,Bedrooms) = Price \]
+                    <img src="lib/img/table2.png">
+                </section>
+
+                <section>
+                    <h2>Model with a plane!</h2>
+                    <img src="lib/img/plane.png" height="500px">
+                </section>
+
+                <section>
+                    <h2>What about more dimensions?</h2>
+                </section>
+
+                <section>
+                    <h2>Hypothesis: a Hyperplane!</h2>
+                    <p class="fragment">
+                    <br>
+                    A Line ... 
+                    \[ h(x) = \theta_0 + \theta_1 x \]
+
+                    <p class="fragment">
+                    <br>
+                    A plane ... 
+                    \[ h(x) = \theta_0 + \theta_1 x + \theta_2 x \]
+
+                    <p class="fragment">
+                    <br>
+                    A hyperplane!
+                    \[ h(x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 \dots \theta_n x_n \]
+
+                    <p class="fragment">
+                    <br>
+                    Let \(x_0 = 1\) and condense. Don't let the linear algebra scare you!
+                    \[ h(x) = \sum_{i=0}^n \theta_i x_i = \theta^T x\]
+                </section>
+
+                <section>
+                    <h2>Least Squares Cost Function</h2>
+                    \[
+J(\theta) = \frac{1}{2} \sum_{i=0}^m (h_{\theta}(x^{(i)}) - y^{(i)})^2
+                    \]
+<p>
+<br>
+Simply quantifies the total error between all input 
+data points and the hypothesis function.
+</p>
+<p>
+<br>
+If we minimize this error we'll have the optimal weights \(\theta\)!
+</p>
+                </section>
+
+                <section>
+                    <h2>Find Best Fit: Gradient Descent</h2>
+                    Minimize error between the model and data:
+                    \[
+\theta_j = \theta_j - 
+\alpha \frac{\partial}{\partial \theta_j} J(\theta)
+                    \]
+                    <a href="http://nl-hugo.github.io/d3-gradient-descent/index.html" target="_blank">
+                    <img src="lib/img/grad.gif" >
                     </a>
-                    <ul>
-                        <li><strong>O</strong>bjective <strong>C</strong>ategorical <strong>A</strong>bstract <strong>M</strong>achine <strong>L</strong>anguage ... kind of.</li>
-                        <li>Created at the French research institution INRIA in 1996 by Xavier Leroy, Jérôme Vouillon, Damien Doligez, Didier Rémy.</li>
-                        <li><q cite="http://www.wikiwand.com/en/OCaml">OCaml unifies functional, imperative, and object-oriented programming under an ML-like type system. -Wikipedia</li></q>
-                    </ul>
                 </section>
 
                 <section>
-                    <h2>Highlights</h2>
-                    <ul>
-                        <li>Static type system makes runtime type mismatches impossible</li>
-                        <li>Type inference gives a feel of a dynamically typed language</li>
-                        <li>Foreign function interface for linking with C and FORTRAN</li>
-                        <li>Parametric polymorphism aides in writting highly expressive, terse functions</li>
-                        <li>Exhaustive pattern matching warns you when cases haven't been covered</li>
-                        <li>Native compilers for IA-32, AMD64, Power, SPARC, ARM, and ARM64</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h2>"Ocaml in 1 Slide"</h2>
-                    <small>Thank you professor <a href="http://www.cs.columbia.edu/~sedwards/">Edwards</a></small>
-
-                    <pre><code data-trim contenteditable>
-let rec map f = function    (* pass functions *)
-    | [] -> []              (* pattern matching *)
-    | head :: tail ->       (* case splitting *)
-        let r = f head in   (* polymorphic *)
-        r :: map f tail     (* prepend using cons operator *)
-                    </code></pre>
-
-                    <pre><code data-trim contenteditable>
-# List.map;;
-val map : (’a -> ’b) -> ’a list -> ’b list
-# (* note how types are inferred *)
-
-# List.map (fun x -> x + 3) [1;5;9];;
-- : int list = [4; 8; 12]
-
-# let add5 = List.map (fun x -> x + 3);;
-val add5 : int list -> int list = &lt;fun&gt;
-
-# add5 [1;2;3;4;5];;
-- : int list = [6; 7; 8; 9; 10]
-                    </code></pre>
-                </section>
-
-
-                <section>
-                    <h2>Types</h2>
-                    <pre><code data-trim contenteditable>
-type op = Add | Sub | Mult | Div
-type expr = Lit of int | Binop of expr * op * expr
-                    </pre></code>
-                    <pre><code data-trim contenteditable>
-# let one = Lit(1);;
-val one : expr = Lit 1
-
-# let two = Lit(2);;
-val two : expr = Lit 2
-
-# let three = Binop(one, Add, two);;
-val three : expr = Binop (Lit 1, Add, Lit 2)
-                    </pre></code>
-                </section>
-
-                <section>
-                    <h2>Memoize</h2>
-                    <small><a href="https://github.com/realworldocaml/examples/blob/master/code/imperative-programming/memo.topscript" target="_blank">code from real world ocaml</a></small>
-                    <pre><code data-trim contenteditable>
-let memoize f =
-    let table = Hashtbl.Poly.create () in
-    (fun x ->
-      match Hashtbl.find table x with
-      | Some y -> y
-      | None ->
-        let y = f x in
-        Hashtbl.add_exn table ~key:x ~data:y;
-        y)
-
-let rec fib i = if i <= 1 then 1 else fib (i - 1) + fib (i - 2)
-                    </pre></code>
-
-                </section>
-                <section>
-                    <h2>Memoize</h2>
-                    <small><a href="https://github.com/realworldocaml/examples/blob/master/code/imperative-programming/memo.topscript" target="_blank">code from real world ocaml</a></small>
-                    <pre><code data-trim contenteditable>
-# memoize;;
-val memoize : ('a -> 'b) -> 'a -> 'b = &lt;fun&gt;
-
-# fib;;
-val fib : int -> int = &lt;fun&gt;
-
-# let fib = memoize fib;;
-val fib : int -> int = &lt;fun&gt;
-
-# time (fun () -> fib 40);;
-Time: 4.90749s
-- : int = 165580141
-
-# time (fun () -> fib 40);;
-Time: 0.00286102ms
-- : int = 165580141
-                    </pre></code>
-                </section>
-
-
-
-                <section>
-                    <h2>Complex Pattern Matching</h2>
-                    <pre><code data-trim contenteditable>
-let rec uniq = function
-    | ([] | [_]) as l -> l
-    | x :: ((x2::_) as xs) ->
-        if x = x2 then uniq xs else x :: uniq xs
-                    </pre></code>
-                    <pre><code data-trim contenteditable>
-# uniq;;
-- : 'a list -&gt; 'a list = &lt;fun&gt;
-(* mmmmmm parametric polymorphism *)
-
-# uniq [1;2;3;3;3;4;4;3;3;3;3;5;5];;
-- : int list = [1; 2; 3; 4; 3; 5]
-
-# uniq ["hello";"hello";"world";"!";"!"];;
-- : string list = ["hello"; "world"; "!"]
-                    </pre></code>
-                </section>
-
-
-                <section>
-                    <h2>Ecosystem</h2>
-                    <ul>
-                        <li>ocamldep - Dependency generator</li>
-                        <li>ocamlopt - Native code compiler</li>
-                        <li>ocamlc - Byte code compiler</li>
-                        <li>ocamldebug - OCaml source-level replay debugger</li>
-                        <li>opam - Package manager</li>
-                        <li><a href="https://github.com/diml/utop" target="_blank">utop</a> - Imporved toplevel interpreter (ocaml is the standard interpeter)</li>
-                        <li><a href="https://github.com/janestreet/core" target="_blank">Core</a> - Jane Street Capital's standard library overlay</li>
-                        <li><a href="https://github.com/the-lambda-church/merlin" target="_blank">merlin</a> - Context sensitive code completion for vim and emacs</li>
-                        <li>ocamllex - Lexer generator</li>
-                        <li>ocamlyacc - Parser generator</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h2>Facebook</h2>
-                    <p><a href="http://flowtype.org/" target="_blank">Flow</a> - a static type checker for JavaScript</p>
-                    <img width="350" src="zuck.jpg">
-                </section>
-
-                <section>
-                    <h2>Facebook</h2>
-                    <p><a href="http://flowtype.org/" target="_blank">Flow</a> - a static type checker for JavaScript</p>
-                    <pre><code data-trim contenteditable>
-/* @flow */
-function foo(x) {
-    return x * 10;
-}
-foo('Hello, world!');
-                    </code></pre>
-                    <pre><code data-trim contenteditable>
-$> flow
-hello.js:5:5,19: string
-This type is incompatible with
-  hello.js:3:10,15: number
-                    </code></pre>
+                    <h2>Supervised Learning</h2>
                     <p>
-                    Install
+Learning is merely minimizing error between our hypothesis function and 
+the training set. We can then make predictions using \(h\).
+                    </p>
+                    <img src="lib/img/flow.png" height="500px">
+                </section>
+
+                <section>
+                    <h2>Linear Regression</h2>
                     <pre><code data-trim contenteditable>
-opam install flowtype
+>>> from sklearn import linear_model
+>>> classifier = linear_model.LinearRegression()
+>>> X = [[0], [1], [2]]
+>>> y = [ 0,   2,   4]
+>>> classifier.fit(X,y)
+LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False)
+>>> classifier.coef_
+array([ 2.])
+>>> new_data = [[3],[4]]
+>>> classifier.predict(new_data)
+array([ 6.,  8.])
                     </code></pre>
+                </section>
+
+                <section>
+                    <h2>Polynomial Regression</h2>
+                    \[
+h(x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 +
+\theta_3 x_1 x_2 + \theta_4 x_1^2 + \theta_5 x_2^2 ...
+                    \]
+                    <img src="lib/img/poly.png" height="500px">
+                </section>
+
+                <section>
+                    <h2>Problem: Overfitting</h2>
+<p>
+As model complexity increases, accuracy of approximating the ground truth decreases.
+</p>
+                    <img src="lib/img/overfit2.png" >
+                </section>
+
+                <section>
+                    <h2>Solution: Regularization</h2>
+                    <p>
+Penalize extreme parameter values to reduce model complexity.
+                    </p>
+                    <p>
+                    Well Known: Lasso, Ridge, ElasticNet
+                    </p>
+                    <img src="lib/img/reg_coeff.png" height="500px">
+                </section>
+
+                <section>
+                    <h2>Regularized</h2>
+                    <h2>Polynomial Regression</h2>
+                    <pre><code data-trim contenteditable>
+print(__doc__)
+
+# Author: Mathieu Blondel
+#         Jake Vanderplas
+# License: BSD 3 clause
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.linear_model import Ridge
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.pipeline import make_pipeline
+
+def f(x):
+    """ function to approximate by polynomial interpolation"""
+    return x * np.sin(x)
+
+# generate points used to plot
+x_plot = np.linspace(0, 10, 100)
+
+# generate points and keep a subset of them
+x = np.linspace(0, 10, 100)
+rng = np.random.RandomState(0)
+rng.shuffle(x)
+x = np.sort(x[:20])
+y = f(x)
+
+# create matrix versions of these arrays
+X = x[:, np.newaxis]
+X_plot = x_plot[:, np.newaxis]
+
+plt.plot(x_plot, f(x_plot), label="ground truth")
+plt.scatter(x, y, label="training points")
+
+for degree in [3, 4, 5]:
+    model = make_pipeline(PolynomialFeatures(degree), Ridge())
+    model.fit(X, y)
+    y_plot = model.predict(X_plot)
+    plt.plot(x_plot, y_plot, label="degree %d" % degree)
+
+plt.legend(loc='lower left')
+plt.show()
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Model Assessment:</h2>
+                    <h2>Cross Validation</h2>
+                    <p>
+                    Split data into k "folds"; train model then assess error on validation set (\(\frac{1}{k}\) of the data); average error across all sets
+                    </p>
+                    <img src="lib/img/kfold.png" >
+                </section>
+
+                <section>
+                    <h2>Cross Validation</h2>
+                    <img src="lib/img/crossfit.png" height="500px">
+                </section>
+
+                <section>
+                    <h2>iPython Data Exploration</h2>
+                    ... cut to terminal
+                    <p class="fragment">
+                    <br>
+                    <a href="http://www.datarobot.com/blog/gradient-boosted-regression-trees/" target="_blank">
+                        Full California Housing Example using Gradient Boosted Regression Trees
+                    </a>
                     </p>
                 </section>
 
                 <section>
-                    <h2>Jane Street</h2>
+                    <h2>Classification</h2>
                     <ul>
-                        <li>A quantitative trading firm and the largest industrial user of OCaml.</li>
-                        <li>They maintain <a href="https://github.com/janestreet/core" target="_blank">Core</a>, a standard library overlay.</li>
-                        <li><a href="https://blogs.janestreet.com/category/ocaml/" target="_blank">(* Musings from Jane Street's OCaml Developers *)</a></li>
+                        <li>Logistic Regression</li>
+                        <li>
+                            <a href="http://scikit-learn.org/stable/tutorial/statistical_inference/supervised_learning.html#support-vector-machines-svms" target="_blank">
+                                Support Vector Machines
+                            </a>
+                        </li>
+                        <li>Perceptrons</li>
+                        <li>
+                            <a href="http://scikit-learn.org/stable/auto_examples/classification/plot_lda_qda.html" target="_blank">
+                                Linear Discriminant Analysis
+                            </a>
+                        </li>
+
+                    </ul>
+                    <img src="lib/img/classification.jpg">
+                </section>
+
+                <section>
+                    <h2>Mmmm Machine Learning</h2>
+                    <ul>
+                        <li>
+                            <a href="http://scikit-learn.org/stable/user_guide.html" target="_blank">
+                                scikit-learn Tutorials
+                            </a>
+                        <li>
+                    <a href="https://www.coursera.org/learn/machine-learning" target="_blank">
+                        Stanford Coursera
+                    </a>
+                        <li>Machine Learning at Scale:
+                            <ul>
+                                <li>
+                                    <a href="https://www.edx.org/course/introduction-big-data-apache-spark-uc-berkeleyx-cs100-1x" target="_blank">
+                                        Spark
+                                    </a>
+                                </li>
+                                <li>Hadoop too but meh :)</li>
+                            </ul>
+                        </li>
+                        <li>Neural Net Libraries:
+                            <ul>
+                                <li>
+                                    <a href="http://karpathy.github.io/neuralnets/" target="_blank">
+                                        <em>Hacker's Guide to Neural Networks</em>
+                                    </a>
+                                    (Andrej Karpathy is amazing)
+                                </li>
+                                <li>Theano (Python, Symbolic Syntax, University of Montreal)</li>
+                                <li>Torch (Lua, NYU, DeepMind, FaceBook)</li>
+                                <li>Caffe (C++/Python interface, Berkeley, Google DeepDream)</li>
+                            </ul>
+                        </li>
                     </ul>
                 </section>
 
                 <section>
-                    <h2>All you need is love and </h2>
-                    <h2><a href="https://realworldocaml.org/" target="_blank">Real World OCaml</a></h2>
-                </section>
-
-                <section>
-                    <h1>Thanks MLH!</h1>
+                    <h2>Thanks!</h2>
                 </section>
 
 			</div>
@@ -270,6 +402,9 @@ opam install flowtype
 
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.min.js"></script>
+        <!-- MathJax for rendering LaTex-->
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
 
 		<script>
 
@@ -282,7 +417,7 @@ opam install flowtype
 				center: true,
 
 				theme: Reveal.getQueryHash().theme || 'night', // available themes are in /css/theme
-				transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+				transition: Reveal.getQueryHash().transition || 'none', // default/cube/page/concave/zoom/linear/fade/none
 
 				// Parallax scrolling
                 parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
